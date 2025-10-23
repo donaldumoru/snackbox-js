@@ -21,11 +21,9 @@ grabCircle.addEventListener("mousedown", function (e) {
       const sliderRect = slider.getBoundingClientRect();
       const SLIDER_POSITION = sliderRect.x;
 
-      if (SLIDER_POSITION > PERCENTAGE_INFO_POSITION) {
-        percentageDisplay.classList.add("change-text-color");
-      } else {
-        percentageDisplay.classList.remove("change-text-color");
-      }
+      SLIDER_POSITION > PERCENTAGE_INFO_POSITION
+        ? percentageDisplay.classList.add("change-text-color")
+        : percentageDisplay.classList.remove("change-text-color");
 
       const WRAPPER_WIDTH_PERCENTAGE = (SLIDER_POSITION / BODY_WIDTH) * 100;
 
