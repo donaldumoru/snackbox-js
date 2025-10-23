@@ -7,7 +7,7 @@ const grabCircle = document.querySelector(".circle");
 const percentageDisplay = document.querySelector("h1");
 
 const BODY_WIDTH = document.body.getBoundingClientRect().width;
-const TEXT_INFO_POSITION = percentageDisplay.getBoundingClientRect().x;
+const PERCENTAGE_INFO_POSITION = percentageDisplay.getBoundingClientRect().x;
 
 let dragging = false;
 
@@ -21,21 +21,21 @@ grabCircle.addEventListener("mousedown", function (e) {
       const sliderRect = slider.getBoundingClientRect();
       const SLIDER_POSITION = sliderRect.x;
 
-      if (SLIDER_POSITION > TEXT_INFO_POSITION) {
+      if (SLIDER_POSITION > PERCENTAGE_INFO_POSITION) {
         percentageDisplay.classList.add("change-text-color");
       } else {
         percentageDisplay.classList.remove("change-text-color");
       }
 
-      const WRAPPER_WIDTH = (SLIDER_POSITION / BODY_WIDTH) * 100;
+      const WRAPPER_WIDTH_PERCENTAGE = (SLIDER_POSITION / BODY_WIDTH) * 100;
 
       slider.style.left = `${e.clientX}px`;
-      wrapper.style.width = `${WRAPPER_WIDTH}%`;
-      percentageDisplay.textContent = `${WRAPPER_WIDTH.toFixed()}%`;
+      wrapper.style.width = `${WRAPPER_WIDTH_PERCENTAGE}%`;
+      percentageDisplay.textContent = `${WRAPPER_WIDTH_PERCENTAGE.toFixed()}%`;
     }
   });
 });
 
-document.addEventListener("mouseup", function (e) {
+window.addEventListener("mouseup", function (e) {
   dragging = false;
 });
