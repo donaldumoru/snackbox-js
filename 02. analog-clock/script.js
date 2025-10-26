@@ -7,6 +7,7 @@ const hourHand = document.querySelector('.hour');
 const hourDisplay = document.querySelector('.hour-display');
 const minuteDisplay = document.querySelector('.minute-display');
 const dayAndDateDisplay = document.querySelector('.day-and-date');
+const infoText = document.querySelector('.info-text');
 
 const days = ['sun', 'mon', 'tue', 'wed', 'thur', 'fri', 'sat'];
 
@@ -119,6 +120,7 @@ updateClock();
 setInterval(updateClock, ONE_SECOND);
 
 let isFullScreen = false;
+
 document.querySelector('body').addEventListener('dblclick', () => {
   if (!isFullScreen) {
     document.querySelector('body').requestFullscreen();
@@ -128,3 +130,10 @@ document.querySelector('body').addEventListener('dblclick', () => {
     isFullScreen = false;
   }
 });
+
+const infoIcon = infoText.previousElementSibling;
+infoIcon.addEventListener('pointerenter', () =>
+  isFullScreen
+    ? (infoText.textContent = 'Double click page to exit fullscreen mode')
+    : (infoText.textContent = 'Double click page to enter fullscreen mode')
+);
