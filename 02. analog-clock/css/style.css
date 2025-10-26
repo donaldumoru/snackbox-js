@@ -13,13 +13,13 @@
 
 body {
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
   overflow: hidden;
   background-color: #0a0a0a;
   min-height: 100vh;
   font-family: var(--text-font);
-  padding-inline-start: 5%;
+  /* padding-inline-start: 5%; */
 }
 
 .clock-container {
