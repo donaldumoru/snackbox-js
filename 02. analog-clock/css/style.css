@@ -5,7 +5,7 @@
 }
 
 :root {
-  --text-font: "Orbitron";
+  --text-font: 'Orbitron';
   --font-color: #929291;
   --middle-circle-color: #e4e2dd;
   --minute-color: #9a9999;
@@ -15,19 +15,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
   background-color: #0a0a0a;
   min-height: 100vh;
   font-family: var(--text-font);
-  /* padding-inline-start: 5%; */
 }
 
 .clock-container {
-  width: 50%;
+  min-width: 50%;
   aspect-ratio: 1;
   border-radius: 50%;
   position: relative;
   box-shadow: 2px 2px 30px 0px var(--font-color);
+  overflow: hidden;
 }
 
 .tick-mark {
@@ -119,4 +118,22 @@ body {
 
 .day-and-date {
   font-size: 0.75rem;
+}
+
+@media (max-width: 480px) {
+  body {
+    overflow-y: hidden;
+  }
+
+  .clock-container {
+    width: 90%;
+  }
+  .number,
+  .time {
+    font-size: 1.5rem;
+  }
+
+  .day-and-date {
+    font-size: 0.5rem;
+  }
 }
