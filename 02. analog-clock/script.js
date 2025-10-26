@@ -117,3 +117,14 @@ const ONE_SECOND = 1000;
 const updateClock = setupClockUpdate();
 updateClock();
 setInterval(updateClock, ONE_SECOND);
+
+let isFullScreen = false;
+document.querySelector('body').addEventListener('dblclick', () => {
+  if (!isFullScreen) {
+    document.querySelector('body').requestFullscreen();
+    isFullScreen = true;
+  } else {
+    document.exitFullscreen();
+    isFullScreen = false;
+  }
+});
