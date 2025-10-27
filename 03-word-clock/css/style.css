@@ -44,3 +44,9 @@ body {
 .enabled {
   color: #c7c7c6;
 }
+
+@media (max-width: 480px) {
+  .word {
+    font-size: 1.5rem;
+  }
+}
