@@ -46,6 +46,10 @@ body {
 }
 
 @media (max-width: 480px) {
+  .clock-container {
+    overflow-y: hidden;
+  }
+
   .word {
     font-size: 1.5rem;
   }
