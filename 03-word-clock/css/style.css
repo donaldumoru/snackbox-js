@@ -46,7 +46,7 @@ body {
 }
 
 @media (max-width: 480px) {
-  .clock-container {
+  body {
     overflow-y: hidden;
   }
 
