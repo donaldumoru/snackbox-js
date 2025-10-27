@@ -122,16 +122,12 @@ const displayTime = function (arr) {
 
   allItemElements[0].classList.add('enabled');
 
-  console.log(arr);
-
   arr.forEach(item => {
     const itemToUpdate = allItemElements.find(
       el =>
         el.hasAttribute(`data-${item.attribute}`) &&
         Object.values(el.dataset).join('') === item.text
     );
-
-    console.log(itemToUpdate);
 
     itemToUpdate.classList.add('enabled');
   });
