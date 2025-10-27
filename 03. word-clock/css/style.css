@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Orbitron';
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #0a0a0a;
+}
+
+.clock-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+  border-radius: 2%;
+  gap: 0.5rem;
+  padding: 2%;
+  box-shadow: 2px 2px 20px 0px #929291;
+}
+
+.clock-container > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.word {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-weight: bolder;
+}
+
+.disabled {
+  color: #2e2e2e;
+}
+
+.enabled {
+  color: #c7c7c6;
+}

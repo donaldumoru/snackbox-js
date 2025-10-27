@@ -1,3 +1,5 @@
+'use strict';
+
 const clockNumbers = document.querySelectorAll('.number');
 const middleCircle = document.querySelector('.middle-circle');
 const clockNumberSpans = document.querySelectorAll('.number span');
@@ -134,6 +136,8 @@ document.querySelector('body').addEventListener('dblclick', () => {
 const infoIcon = infoText.previousElementSibling;
 infoIcon.addEventListener('pointerenter', () =>
   isFullScreen
-    ? (infoText.textContent = 'Double click page to exit fullscreen mode')
-    : (infoText.textContent = 'Double click page to enter fullscreen mode')
+    ? (infoText.innerHTML =
+        'Double click page to <span>exit</span> fullscreen mode')
+    : (infoText.innerHTML =
+        'Double click page to <span>enter</span> fullscreen mode')
 );

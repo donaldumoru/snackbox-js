@@ -46,9 +46,13 @@ img:hover + .info-text {
 }
 
 .info-text {
-  color: var(--font-color);
+  color: var(--minute-color);
   opacity: 0;
   transition: 0.3s ease-in-out;
+}
+
+.info-text span {
+  color: rgb(146, 10, 10);
 }
 
 .clock-container {
@@ -73,7 +77,7 @@ img:hover + .info-text {
   aspect-ratio: 1;
   position: absolute;
   text-align: center;
-  padding: 5%;
+  padding: 3%;
   z-index: 1;
   font-size: 2rem;
 }
