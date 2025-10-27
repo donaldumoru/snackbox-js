@@ -159,7 +159,7 @@ const makeItemsToRender = function (mins, hour) {
   );
 };
 
-const updateClock = function (min, hr) {
+const updateClock = function () {
   const date = new Date();
 
   const minutes = date.getMinutes();
@@ -170,45 +170,9 @@ const updateClock = function (min, hr) {
 
 updateClock();
 
-const FIVE_MINUTES = 1000 * 60 * 5;
-
-let timeoutId = null;
-let intervalId = null;
-
-const startTimer = function () {
-  clearTimeout(timeoutId);
-  clearInterval(intervalId);
-
-  // get the number of milliseconds since the last five minutes
-  // by getting the remainder of time since 1970 / five minutes
-  let timeSinceFiveMinutes = Date.now() % FIVE_MINUTES;
-  // get the time left until the next five minutes by subtracting the above time since five from five minutes
-  let timeUntilFiveMinutes = FIVE_MINUTES - timeSinceFiveMinutes;
-  let timeForFirstKickOff = timeUntilFiveMinutes;
-  if (timeForFirstKickOff < 10) timeForFirstKickOff += FIVE_MINUTES;
-
-  timeoutId = setTimeout(function () {
-    updateClock();
-    intervalId = setInterval(updateClock, FIVE_MINUTES);
-  }, timeForFirstKickOff);
+const runNextClockUpdate = function () {
+  updateClock();
+  requestAnimationFrame(runNextClockUpdate);
 };
 
-startTimer();
-
-document.addEventListener('visibilitychange', function () {
-  if (!document.hidden) {
-    updateClock();
-    startTimer();
-  }
-});
-
-// test----->>> animationFrame
-// const createFrames = function (timestamp) {
-//   const div = document.createElement('div');
-//   div.classList.add('anim-frame');
-//   document.body.append(div);
-
-//   requestAnimationFrame(createFrames);
-// };
-
-// requestAnimationFrame(createFrames);
+requestAnimationFrame(runNextClockUpdate);
