@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Social Media Stories</title>
     <link rel="stylesheet" href="css/style.css" />
-    <script defer src="script.js"></script>
+    <script type="module" defer src="script.js"></script>
   </head>
   <body>
     <div class="container">
@@ -13,11 +13,21 @@
       <div class="stories-container"></div>
       <div class="timeline-container"></div>
 
-      <div class="story-view-container">
+      <div class="story-view-container hide">
         <div class="story-controls-wrapper">
           <div class="progress-bar-container"></div>
 
-          <div class="story-controls"></div>
+          <div class="story-controls">
+            <div class="view-story-top-container">
+              <div class="avatar-wrapper">
+                <img src="" alt="" class="story-avatar" />
+                <span class="story-username"></span>
+              </div>
+              <div class="btn-controls">
+                <img src="img/close.svg" alt="" class="close-btn" />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="view-story-image">

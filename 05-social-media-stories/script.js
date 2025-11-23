@@ -5,46 +5,24 @@ const storyViewContainer = document.querySelector(".story-view-container");
 const progressBarContainer = document.querySelector(".progress-bar-container");
 const viewStoryImg = document.querySelector(".story-image");
 const storyControls = document.querySelector(".story-controls");
+const closeBtn = document.querySelector(".close-btn");
+const storyAvatar = document.querySelector(".story-avatar");
+const storyUsername = document.querySelector(".story-username");
 
-const accounts = [
-  {
-    username: "dangkhoa",
-    avatar: "img/dangkhoa.jpg",
-    stories: ["img/1.jpg", "img/2.jpg", "img/3.jpg", "img/4.jpg"],
-    userAccount: true,
-    posts: [
-      { image: "", caption: "", likes: 30, time: "2025-11-10" },
-      { image: "", caption: "", likes: 30, time: "2025-11-09" },
-      { image: "", caption: "", likes: 30, time: "2025-11-05" },
-    ],
-  },
+const accountsData = "./accounts.json";
 
-  {
-    username: "johndoe",
-    avatar: "img/johndoe.jpg",
-    stories: ["img/5.jpg", "img/6.jpg", "img/7.jpg"],
-    userAccount: false,
-  },
+let timer;
 
-  {
-    username: "janedoe",
-    avatar: "img/janedoe.jpg",
-    stories: [
-      "img/8.jpg",
-      "img/9.jpg",
-      "img/10.jpg",
-      "img/11.jpg",
-      "img/12.jpg",
-    ],
-    userAccount: false,
-  },
-  {
-    username: "whoami",
-    avatar: "img/whoami.jpg",
-    stories: ["img/13.jpg"],
-    userAccount: false,
-  },
-];
+const fetchAccountsData = async function (json) {
+  const response = await fetch(json);
+  if (!response.ok) {
+    return;
+  }
+  const result = await response.json();
+  return result;
+};
+
+const userAccounts = await fetchAccountsData(accountsData);
 
 const renderUsers = function (accts) {
   accts.forEach((acc) => {
@@ -58,7 +36,6 @@ const renderUsers = function (accts) {
     avatar.classList.add("avatar");
     avatar.setAttribute("username", acc.username);
     avatar.src = acc.avatar;
-
     storyWrapper.append(avatar);
 
     if (acc.userAccount) {
@@ -77,11 +54,7 @@ const renderUsers = function (accts) {
   });
 };
 
-renderUsers(accounts);
-
-/// USER STORY VIEW
-
-let timer;
+renderUsers(userAccounts);
 
 const makeStoryBar = function (barWidth) {
   const storyBarWrapper = document.createElement("div");
@@ -97,153 +70,105 @@ const createStoriesAmount = function (arr) {
   if (!arr.length) {
     return;
   }
+  // reset the progress bar before rendering new story bars for the current user
+  progressBarContainer.innerHTML = "";
 
   const FULL_WIDTH = 100;
+  const NUMBER_OF_STORIES = arr.length;
+  const WIDTH_OF_BAR = FULL_WIDTH / NUMBER_OF_STORIES;
 
-  const WIDTH_OF_BAR = FULL_WIDTH / arr.length;
-
-  if (arr.length === 1) {
+  for (let i = 0; i < NUMBER_OF_STORIES; i++) {
     makeStoryBar(WIDTH_OF_BAR);
-  } else {
-    const numberOfStories = arr.length;
-    for (let i = 0; i < numberOfStories; i++) {
-      makeStoryBar(WIDTH_OF_BAR);
-    }
   }
 };
 
-const createModalElements = function () {
-  const topContainer = document.createElement("div");
-  topContainer.classList.add("view-story-top-container");
+const updateStoryProgress = function (
+  accts,
+  currAcc,
+  currAccIndex,
+  currStoryIndex = 0
+) {
+  clearInterval(timer);
 
-  const avatarWrapper = document.createElement("div");
-  avatarWrapper.classList.add("avatar-wrapper");
-  const avatar = document.createElement("img");
-  avatar.classList.add("story-avatar");
-  const username = document.createElement("span");
-  username.classList.add("story-username");
-  avatarWrapper.append(avatar, username);
-  const closeBtn = document.createElement("img");
-  closeBtn.classList.add("close-btn");
-  const btnControls = document.createElement("div");
-  btnControls.classList.add("btn-controls");
-  btnControls.append(closeBtn);
-  topContainer.append(avatarWrapper, btnControls);
-  storyControls.append(topContainer);
-};
-
-createModalElements();
-
-const renderStoryModal = function (account) {
-  const avatar = document.querySelector(".story-avatar");
-  avatar.src = account.avatar;
-  const username = document.querySelector(".story-username");
-  username.textContent = account.username;
-
-  const closeBtn = document.querySelector(".close-btn");
-  closeBtn.src = "img/close.svg";
-
-  createStoriesAmount(account.stories);
-  updateProgressBar(accounts, account);
-};
-
-const updateProgressBar = function (accounts, account) {
-  const allStoryBarsEl = document.querySelectorAll(".story-bar");
-  const allStoryBars = [...allStoryBarsEl];
-
-  const NUM_OF_ACCOUNTS = accounts.length - 1;
-  let currentAccountIndex = accounts.findIndex((acc) => account === acc);
-
-  const userStories = accounts[currentAccountIndex].stories;
-
-  const MAX_WIDTH = 100;
-  const MAX_STORIES = userStories.length - 1;
-  let currentBarIndex = 0;
+  const NUM_ACCOUNTS = accts.length - 1;
   let storyWidth = 0;
-  let currentBar = allStoryBars[currentBarIndex];
+  const MAX_STORY_WIDTH = 100;
 
-  viewStoryImg.src = userStories[currentBarIndex];
+  let imageSet = true;
 
   timer = setInterval(() => {
-    if (currentBarIndex > MAX_STORIES) {
+    if (currAccIndex > NUM_ACCOUNTS) {
+      storiesContainer.classList.remove("hide");
+      storyViewContainer.classList.add("hide");
       return;
     }
 
-    if (storyWidth < MAX_WIDTH) {
-      storyWidth++;
-      currentBar.style.width = `${storyWidth}%`;
-      currentBar.style.backgroundColor = "var(--offwhite)";
-    } else {
-      if (currentBarIndex >= MAX_STORIES) {
-        storyViewContainer.classList.add("hide");
-        storiesContainer.classList.remove("hide");
-        currentBarIndex = 0;
-        storyWidth = 0;
-        clearInterval(timer);
-        return;
+    const allStoryBars = document.querySelectorAll(".story-bar");
+    let allStoriesLength = allStoryBars.length;
+
+    if (currStoryIndex >= allStoriesLength) {
+      currAccIndex++;
+      storyWidth = 0;
+      currStoryIndex = 0;
+
+      if (currAccIndex <= NUM_ACCOUNTS) {
+        currAcc = accts[currAccIndex];
+        createStoriesAmount(currAcc.stories);
+      }
+    }
+
+    if (storyWidth >= MAX_STORY_WIDTH) {
+      imageSet = true;
+      storyWidth = 0;
+      currStoryIndex++;
+    }
+
+    if (currStoryIndex < allStoriesLength) {
+      if (imageSet) {
+        viewStoryImg.src = currAcc.stories[currStoryIndex];
+        imageSet = false;
       }
 
-      currentBarIndex++;
-      viewStoryImg.src = userStories[currentBarIndex];
-      storyWidth = 0;
+      storyAvatar.src = currAcc.avatar;
+      storyUsername.textContent = currAcc.username;
 
-      currentBar = allStoryBars[currentBarIndex];
+      storyWidth++;
+
+      allStoryBars[currStoryIndex].style.width = `${storyWidth}%`;
+      allStoryBars[currStoryIndex].style.backgroundColor = "var(--offwhite)";
     }
   }, 50);
 };
 
-const updateViewedStatus = function (e) {
-  const currentAccountImage = e.target;
-
-  if (!currentAccountImage.classList.contains("viewed")) {
-    currentAccountImage.classList.add("viewed");
+const displayStories = function (e, accounts) {
+  if (!e.target.classList.contains("avatar")) {
+    return;
   }
-};
 
-const displayStories = function (account) {
-  storiesContainer.classList.add("hide");
-  storyViewContainer.classList.remove("hide");
+  const clickedAccount = e.target.getAttribute("username");
 
-  progressBarContainer.innerHTML = "";
-  renderStoryModal(account);
-};
-
-const allStories = document.querySelectorAll(".avatar");
-
-const updateStory = function (e) {
-  updateViewedStatus(e);
-  const account = accounts.find(
-    (acc) => acc.username === this.getAttribute("username")
+  let currentAccount = accounts.find(
+    (account) => account.username === clickedAccount
   );
 
-  displayStories(account);
+  let currentAccountIndex = accounts.findIndex(
+    (account) => account.username === currentAccount.username
+  );
 
-  navigateStories();
+  createStoriesAmount(currentAccount.stories);
+  updateStoryProgress(accounts, currentAccount, currentAccountIndex);
 
-  const closeBtn = document.querySelector(".close-btn");
-  closeBtn.addEventListener("click", function () {
-    storyViewContainer.classList.add("hide");
-    storiesContainer.classList.remove("hide");
-
-    clearInterval(timer);
-  });
+  storiesContainer.classList.add("hide");
+  storyViewContainer.classList.remove("hide");
 };
 
-allStories.forEach((story) => {
-  story.addEventListener("click", updateStory);
+/// Handle click on each story
+storiesContainer.addEventListener("click", (e) =>
+  displayStories(e, userAccounts)
+);
+
+closeBtn.addEventListener("click", function () {
+  viewStoryImg.src = "";
+  storiesContainer.classList.remove("hide");
+  storyViewContainer.classList.add("hide");
 });
-
-const navigateStories = function () {
-  viewStoryImg.addEventListener("click", function (e) {
-    const image = e.target;
-    const imageWidth = image.getBoundingClientRect().width;
-
-    const leftMax = imageWidth / 2;
-
-    if (e.offsetX < leftMax) {
-      console.log("to previous");
-    } else {
-      console.log("to next");
-    }
-  });
-};

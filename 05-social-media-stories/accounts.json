@@ -1,0 +1,34 @@
+[
+  {
+    "username": "dangkhoa",
+    "avatar": "img/dangkhoa.jpg",
+    "stories": ["img/1.jpg", "img/2.jpg", "img/3.jpg", "img/4.jpg"],
+    "userAccount": true
+  },
+
+  {
+    "username": "johndoe",
+    "avatar": "img/johndoe.jpg",
+    "stories": ["img/5.jpg", "img/6.jpg", "img/7.jpg"],
+    "userAccount": false
+  },
+
+  {
+    "username": "janedoe",
+    "avatar": "img/janedoe.jpg",
+    "stories": [
+      "img/8.jpg",
+      "img/9.jpg",
+      "img/10.jpg",
+      "img/11.jpg",
+      "img/12.jpg"
+    ],
+    "userAccount": false
+  },
+  {
+    "username": "whoami",
+    "avatar": "img/whoami.jpg",
+    "stories": ["img/13.jpg"],
+    "userAccount": false
+  }
+]
