@@ -1,15 +1,13 @@
-"use strict";
+const storiesContainer = document.querySelector('.stories-container');
+const storyViewContainer = document.querySelector('.story-view-container');
+const progressBarContainer = document.querySelector('.progress-bar-container');
+const viewStoryImg = document.querySelector('.story-image');
+const storyControls = document.querySelector('.story-controls');
+const closeBtn = document.querySelector('.close-btn');
+const storyAvatar = document.querySelector('.story-avatar');
+const storyUsername = document.querySelector('.story-username');
 
-const storiesContainer = document.querySelector(".stories-container");
-const storyViewContainer = document.querySelector(".story-view-container");
-const progressBarContainer = document.querySelector(".progress-bar-container");
-const viewStoryImg = document.querySelector(".story-image");
-const storyControls = document.querySelector(".story-controls");
-const closeBtn = document.querySelector(".close-btn");
-const storyAvatar = document.querySelector(".story-avatar");
-const storyUsername = document.querySelector(".story-username");
-
-const accountsData = "./accounts.json";
+const accountsData = './accounts.json';
 
 let timer;
 
@@ -25,28 +23,28 @@ const fetchAccountsData = async function (json) {
 const userAccounts = await fetchAccountsData(accountsData);
 
 const renderUsers = function (accts) {
-  accts.forEach((acc) => {
-    const storyContainer = document.createElement("div");
-    storyContainer.classList.add("story-container");
+  accts.forEach(acc => {
+    const storyContainer = document.createElement('div');
+    storyContainer.classList.add('story-container');
 
-    const storyWrapper = document.createElement("div");
-    storyWrapper.classList.add("story-wrapper");
+    const storyWrapper = document.createElement('div');
+    storyWrapper.classList.add('story-wrapper');
 
-    const avatar = document.createElement("img");
-    avatar.classList.add("avatar");
-    avatar.setAttribute("username", acc.username);
+    const avatar = document.createElement('img');
+    avatar.classList.add('avatar');
+    avatar.setAttribute('username', acc.username);
     avatar.src = acc.avatar;
     storyWrapper.append(avatar);
 
     if (acc.userAccount) {
-      const addStoryIcon = document.createElement("img");
-      addStoryIcon.classList.add("add-story-icon");
-      addStoryIcon.src = "img/add.svg";
+      const addStoryIcon = document.createElement('img');
+      addStoryIcon.classList.add('add-story-icon');
+      addStoryIcon.src = 'img/add.svg';
       storyWrapper.append(addStoryIcon);
     }
 
-    const username = document.createElement("span");
-    username.classList.add("username");
+    const username = document.createElement('span');
+    username.classList.add('username');
     username.textContent = acc.username;
 
     storyContainer.append(storyWrapper, username);
@@ -57,11 +55,11 @@ const renderUsers = function (accts) {
 renderUsers(userAccounts);
 
 const makeStoryBar = function (barWidth) {
-  const storyBarWrapper = document.createElement("div");
-  storyBarWrapper.classList.add("story-bar-wrapper");
+  const storyBarWrapper = document.createElement('div');
+  storyBarWrapper.classList.add('story-bar-wrapper');
   storyBarWrapper.style.width = `${barWidth}%`;
-  const storyBar = document.createElement("div");
-  storyBar.classList.add("story-bar");
+  const storyBar = document.createElement('div');
+  storyBar.classList.add('story-bar');
   storyBarWrapper.append(storyBar);
   progressBarContainer.append(storyBarWrapper);
 };
@@ -71,7 +69,7 @@ const createStoriesAmount = function (arr) {
     return;
   }
   // reset the progress bar before rendering new story bars for the current user
-  progressBarContainer.innerHTML = "";
+  progressBarContainer.innerHTML = '';
 
   const FULL_WIDTH = 100;
   const NUMBER_OF_STORIES = arr.length;
@@ -98,12 +96,12 @@ const updateStoryProgress = function (
 
   timer = setInterval(() => {
     if (currAccIndex > NUM_ACCOUNTS) {
-      storiesContainer.classList.remove("hide");
-      storyViewContainer.classList.add("hide");
+      storiesContainer.classList.remove('hide');
+      storyViewContainer.classList.add('hide');
       return;
     }
 
-    const allStoryBars = document.querySelectorAll(".story-bar");
+    const allStoryBars = document.querySelectorAll('.story-bar');
     let allStoriesLength = allStoryBars.length;
 
     if (currStoryIndex >= allStoriesLength) {
@@ -135,40 +133,40 @@ const updateStoryProgress = function (
       storyWidth++;
 
       allStoryBars[currStoryIndex].style.width = `${storyWidth}%`;
-      allStoryBars[currStoryIndex].style.backgroundColor = "var(--offwhite)";
+      allStoryBars[currStoryIndex].style.backgroundColor = 'var(--offwhite)';
     }
   }, 50);
 };
 
 const displayStories = function (e, accounts) {
-  if (!e.target.classList.contains("avatar")) {
+  if (!e.target.classList.contains('avatar')) {
     return;
   }
 
-  const clickedAccount = e.target.getAttribute("username");
+  const clickedAccount = e.target.getAttribute('username');
 
   let currentAccount = accounts.find(
-    (account) => account.username === clickedAccount
+    account => account.username === clickedAccount
   );
 
   let currentAccountIndex = accounts.findIndex(
-    (account) => account.username === currentAccount.username
+    account => account.username === currentAccount.username
   );
 
   createStoriesAmount(currentAccount.stories);
   updateStoryProgress(accounts, currentAccount, currentAccountIndex);
 
-  storiesContainer.classList.add("hide");
-  storyViewContainer.classList.remove("hide");
+  storiesContainer.classList.add('hide');
+  storyViewContainer.classList.remove('hide');
 };
 
 /// Handle click on each story
-storiesContainer.addEventListener("click", (e) =>
+storiesContainer.addEventListener('click', e =>
   displayStories(e, userAccounts)
 );
 
-closeBtn.addEventListener("click", function () {
-  viewStoryImg.src = "";
-  storiesContainer.classList.remove("hide");
-  storyViewContainer.classList.add("hide");
+closeBtn.addEventListener('click', function () {
+  viewStoryImg.src = '';
+  storiesContainer.classList.remove('hide');
+  storyViewContainer.classList.add('hide');
 });
